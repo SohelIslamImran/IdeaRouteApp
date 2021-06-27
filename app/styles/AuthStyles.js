@@ -48,7 +48,7 @@ export const ErrorMessage = styled.Text`
   margin-top: ${({ mt = 0 }) => mt}px;
 `;
 
-export const Form = styled.View`
+const Form = styled.View`
   margin: 0 30px 48px 30px;
 `;
 
@@ -59,7 +59,7 @@ export const Label = styled.Text`
   text-transform: uppercase;
 `;
 
-export const Input = styled.TextInput`
+export const InputField = styled.TextInput`
   height: 40px;
   border-bottom-color: ${({ theme }) => theme.colors.lightGray};
   border-bottom-width: ${StyleSheet.hairlineWidth}px;
@@ -67,7 +67,7 @@ export const Input = styled.TextInput`
   font-size: 15px;
 `;
 
-export const SubmitButton = styled.TouchableOpacity`
+export const ButtonContainer = styled.TouchableOpacity`
   height: 52px;
   margin: 0 30px;
   background-color: ${({ theme }) => theme.colors.primary};
@@ -139,7 +139,7 @@ export const AvatarPlaceholder = styled.TouchableOpacity`
   align-items: center;
 `;
 
-const Avatar = styled.Image`
+export const Avatar = styled.Image`
   position: absolute;
   width: 100px;
   height: 100px;
