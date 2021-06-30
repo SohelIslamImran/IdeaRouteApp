@@ -32,7 +32,7 @@ const validationSchema = Yup.object().shape({
   password: Yup.string().required().min(6).label("Password"),
 });
 
-const RegisterScreen = () => {
+const RegisterScreen = ({ navigation }) => {
   const { error } = useContext(AuthContext);
   const { register } = useAuth();
 
@@ -41,7 +41,8 @@ const RegisterScreen = () => {
       <StatusBar style="light" />
       <Container>
         <RegisterHeaderImg />
-        <BackButton>
+
+        <BackButton onPress={() => navigation.goBack()}>
           <BackIcon />
         </BackButton>
 
@@ -90,7 +91,7 @@ const RegisterScreen = () => {
         </Form>
 
         <Spacer mt={32} />
-        <SubButton>
+        <SubButton onPress={() => navigation.navigate("Login")}>
           <SubText color="#414959">
             Already have an account? <SubText color="#e9446a">Sign in</SubText>
           </SubText>

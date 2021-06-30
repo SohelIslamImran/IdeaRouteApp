@@ -28,6 +28,7 @@ const pages = [
 const OnboardingScreen = ({ navigation }) => {
   return (
     <Onboarding
+      controlStatusBar={false}
       SkipButtonComponent={OnboardingButton}
       NextButtonComponent={OnboardingButton}
       DoneButtonComponent={OnboardingButton}

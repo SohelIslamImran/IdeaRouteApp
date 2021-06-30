@@ -1,16 +1,31 @@
 import styled from "styled-components";
+import { Ionicons } from "@expo/vector-icons";
+
+export const FeedHeader = styled.View`
+  padding-bottom: 12px;
+  background-color: ${({ theme }) => theme.colors.white};
+  justify-content: center;
+  align-items: center;
+  border-bottom-width: 1px;
+  border-bottom-color: #ebecf4;
+  box-shadow: 5px 0 15px #454d65;
+  z-index: 1;
+`;
+
+export const HeaderTitle = styled.Text`
+  font-size: 20px;
+  font-weight: 500;
+`;
 
 export const Container = styled.View`
   flex: 1;
   align-items: center;
-  background-color: ${({ theme }) => theme.colors.white};
-  padding: 20px;
+  background-color: ${({ theme }) => theme.colors.bgLight};
 `;
 
 export const Card = styled.View`
-  background-color: #f8f8f8;
+  background-color: ${({ theme }) => theme.colors.white};
   width: 100%;
-  margin-bottom: 20px;
   border-radius: 10px;
 `;
 
@@ -83,3 +98,9 @@ export const InteractionText = styled.Text`
   margin-top: 5px;
   margin-left: 5px;
 `;
+
+export const LikeButton = styled(Ionicons).attrs(({ active, theme }) => ({
+  name: active ? "heart" : "heart-outline",
+  size: 25,
+  color: active ? theme.colors.primary : theme.colors.black,
+}))``;

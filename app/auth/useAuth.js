@@ -7,48 +7,46 @@ import { AuthContext } from "./AuthContextProvider";
 
 !firebase.apps.length && firebase.initializeApp(firebaseConfig);
 
+export const auth = firebase.auth();
+
 const useAuth = () => {
   const { setUser, setIsLoading, setError } = useContext(AuthContext);
 
-  const logIn = (email, password) => {
+  const logIn = async ({ email, password }) => {
     setIsLoading(true);
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(({ user }) => setLoggedInUser(user))
-      .catch((err) => {
-        setError(err.toString());
-        setIsLoading(false);
-      });
+    try {
+      const { user } = await firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password);
+      setLoggedInUser(user);
+    } catch (error) {
+      setError(error.toString());
+      setIsLoading(false);
+    }
   };
 
-  const register = ({ name, email, password }) => {
+  const register = async ({ name, email, password }) => {
     setIsLoading(true);
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(({ user }) => setLoggedInUser({ name, ...user }))
-      .catch((err) => {
-        setError(err.toString());
-        setIsLoading(false);
-      });
-
-    firebase.auth().currentUser.updateProfile({ displayName: name });
+    try {
+      const { user } = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password);
+      setLoggedInUser({ name, ...user });
+      firebase.auth().currentUser.updateProfile({ displayName: name });
+    } catch (error) {
+      setError(error.toString());
+      setIsLoading(false);
+    }
   };
 
-  const logOut = () => {
-    firebase
-      .auth()
-      .signOut()
-      .then(() => {
-        setUser(null);
-        setError(null);
-      });
+  const logOut = async () => {
+    await firebase.auth().signOut();
+    setUser(null);
+    setError(null);
   };
 
   const setLoggedInUser = ({ displayName, name, email }) => {
-    const signedInUser = { isSignedIn: true, name: displayName || name, email };
-    setUser(signedInUser);
+    setUser({ isSignedIn: true, name: displayName || name, email });
     setIsLoading(false);
   };
 

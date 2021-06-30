@@ -26,9 +26,9 @@ const validationSchema = Yup.object().shape({
   password: Yup.string().required().min(6).label("Password"),
 });
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }) => {
   const { error } = useContext(AuthContext);
-  const { register } = useAuth();
+  const { logIn } = useAuth();
 
   return (
     <>
@@ -44,7 +44,7 @@ const LoginScreen = () => {
 
         <Form
           initialValues={{ email: "", password: "" }}
-          onSubmit={register}
+          onSubmit={logIn}
           validationSchema={validationSchema}
         >
           <Spacer mr={30} mb={48} ml={30}>
@@ -70,7 +70,7 @@ const LoginScreen = () => {
         </Form>
 
         <Spacer mt={32} />
-        <SubButton>
+        <SubButton onPress={() => navigation.navigate("Register")}>
           <SubText color="#414959">
             New to SocialApp? <SubText color="#e9446a">Sign up</SubText>
           </SubText>

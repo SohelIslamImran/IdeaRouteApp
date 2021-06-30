@@ -1,9 +1,10 @@
 import React from "react";
-import { FlatList } from "react-native";
+import { FlatList, Text } from "react-native";
 import PostCard from "../components/PostCard";
 
 import SafeArea from "../styles/SafeArea";
-import { Container } from "../styles/FeedStyles";
+import { Container, FeedHeader, HeaderTitle } from "../styles/FeedStyles";
+import { StatusBar } from "expo-status-bar";
 
 const Posts = [
   {
@@ -65,18 +66,24 @@ const Posts = [
 
 const HomeScreen = () => {
   return (
-    <SafeArea>
-      <Container>
-        <FlatList
-          data={Posts}
-          renderItem={({ item }) => (
-            <PostCard item={item} onDelete={null} onPress={() => null} />
-          )}
-          keyExtractor={({ id }) => id}
-          showsVerticalScrollIndicator={false}
-        />
-      </Container>
-    </SafeArea>
+    <>
+      <StatusBar style="dark" />
+      <SafeArea>
+        <FeedHeader>
+          <HeaderTitle>Feed</HeaderTitle>
+        </FeedHeader>
+        <Container>
+          <FlatList
+            data={Posts}
+            renderItem={({ item }) => (
+              <PostCard item={item} onDelete={null} onPress={() => null} />
+            )}
+            keyExtractor={({ id }) => id}
+            showsVerticalScrollIndicator={false}
+          />
+        </Container>
+      </SafeArea>
+    </>
   );
 };
 

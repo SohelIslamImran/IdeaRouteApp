@@ -48,10 +48,6 @@ export const ErrorMessage = styled.Text`
   margin-top: ${({ mt = 0 }) => mt}px;
 `;
 
-const Form = styled.View`
-  margin: 0 30px 48px 30px;
-`;
-
 export const Label = styled.Text`
   color: ${({ theme }) => theme.colors.medium};
   font-size: 10px;
