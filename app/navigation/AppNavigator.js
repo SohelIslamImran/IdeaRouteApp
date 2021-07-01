@@ -6,6 +6,7 @@ import HomeScreen from "../screens/HomeScreen";
 import PostScreen from "../screens/PostScreen";
 import { colors } from "../config/theme/colors";
 import Spacer from "../styles/Spacer";
+import PostNavigator from "./PostNavigator";
 
 const Tab = createBottomTabNavigator();
 
@@ -44,7 +45,7 @@ const AppNavigator = () => {
     >
       <Tab.Screen name="Feed" component={HomeScreen} />
       <Tab.Screen name="Messages" component={HomeScreen} />
-      <Tab.Screen name="Post" component={PostScreen} />
+      <Tab.Screen name="Post" component={PostNavigator} />
       <Tab.Screen name="Notification" component={HomeScreen} />
       <Tab.Screen name="Profile" component={HomeScreen} />
     </Tab.Navigator>

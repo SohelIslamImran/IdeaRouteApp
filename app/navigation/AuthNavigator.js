@@ -28,11 +28,9 @@ const AuthNavigator = () => {
     }
   };
 
-  if (isFirstLaunch === null) {
-    return null;
-  } else if (isFirstLaunch) {
+  if (isFirstLaunch) {
     routeName = "Onboarding";
-  } else {
+  } else if (isFirstLaunch === false) {
     routeName = "Login";
   }
 
