@@ -2,11 +2,13 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 
-import HomeScreen from "../screens/HomeScreen";
-import PostScreen from "../screens/PostScreen";
 import { colors } from "../config/theme/colors";
 import Spacer from "../styles/Spacer";
+import HomeScreen from "../screens/HomeScreen";
 import PostNavigator from "./PostNavigator";
+import ProfileScreen from "../screens/ProfileScreen";
+import MessagesScreen from "../screens/MessagesScreen";
+import NotificationScreen from "../screens/NotificationScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -44,10 +46,10 @@ const AppNavigator = () => {
       }}
     >
       <Tab.Screen name="Feed" component={HomeScreen} />
-      <Tab.Screen name="Messages" component={HomeScreen} />
+      <Tab.Screen name="Messages" component={MessagesScreen} />
       <Tab.Screen name="Post" component={PostNavigator} />
-      <Tab.Screen name="Notification" component={HomeScreen} />
-      <Tab.Screen name="Profile" component={HomeScreen} />
+      <Tab.Screen name="Notification" component={NotificationScreen} />
+      <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );
 };

@@ -79,6 +79,7 @@ export const SubmitBtnText = styled.Text`
 
 export const SubButton = styled.TouchableOpacity`
   align-self: center;
+  margin-bottom: 40px;
 `;
 
 export const SubText = styled.Text`

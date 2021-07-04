@@ -1,82 +1,41 @@
-import React from "react";
-import { FlatList, Text } from "react-native";
-import PostCard from "../components/PostCard";
-
-import SafeArea from "../styles/SafeArea";
-import { Container, FeedHeader, HeaderTitle } from "../styles/FeedStyles";
+import React, { useContext, useEffect } from "react";
+import { FlatList } from "react-native";
 import { StatusBar } from "expo-status-bar";
 
-const Posts = [
-  {
-    id: "1",
-    userName: "Jenny Doe",
-    userImg: require("../assets/users/user-3.jpg"),
-    postTime: "4 mins ago",
-    post: "Hey there, this is my test for a post of my social app in React Native.",
-    postImg: require("../assets/posts/post-img-3.jpg"),
-    liked: true,
-    likes: "14",
-    comments: "5",
-  },
-  {
-    id: "2",
-    userName: "John Doe",
-    userImg: require("../assets/users/user-1.jpg"),
-    postTime: "2 hours ago",
-    post: "Hey there, this is my test for a post of my social app in React Native.",
-    postImg: "none",
-    liked: false,
-    likes: "8",
-    comments: "0",
-  },
-  {
-    id: "3",
-    userName: "Ken William",
-    userImg: require("../assets/users/user-4.jpg"),
-    postTime: "1 hours ago",
-    post: "Hey there, this is my test for a post of my social app in React Native.",
-    postImg: require("../assets/posts/post-img-2.jpg"),
-    liked: true,
-    likes: "1",
-    comments: "0",
-  },
-  {
-    id: "4",
-    userName: "Selina Paul",
-    userImg: require("../assets/users/user-6.jpg"),
-    postTime: "1 day ago",
-    post: "Hey there, this is my test for a post of my social app in React Native.",
-    postImg: require("../assets/posts/post-img-4.jpg"),
-    liked: true,
-    likes: "22",
-    comments: "4",
-  },
-  {
-    id: "5",
-    userName: "Christy Alex",
-    userImg: require("../assets/users/user-7.jpg"),
-    postTime: "2 days ago",
-    post: "Hey there, this is my test for a post of my social app in React Native.",
-    postImg: "none",
-    liked: false,
-    likes: "0",
-    comments: "0",
-  },
-];
+import useStore from "../firestore/useStore";
+import PostCard from "../components/PostCard";
+import SafeArea from "../styles/SafeArea";
+import { Container, FeedHeader, HeaderTitle } from "../styles/FeedStyles";
+import { StoreContext } from "../firestore/StoreContextProvider";
+import { Loader } from "../styles/Loader";
+import { AuthContext } from "../auth/AuthContextProvider";
 
 const HomeScreen = () => {
+  const { getPosts, deletePost } = useStore();
+  const { isLoading, posts } = useContext(StoreContext);
+  const { isLoading: userLoading } = useContext(AuthContext);
+
+  useEffect(() => {
+    getPosts();
+  }, []);
+
   return (
     <>
       <StatusBar style="dark" />
+      {(userLoading || isLoading) && <Loader />}
       <SafeArea>
         <FeedHeader>
           <HeaderTitle>Feed</HeaderTitle>
         </FeedHeader>
         <Container>
           <FlatList
-            data={Posts}
+            data={posts}
             renderItem={({ item }) => (
-              <PostCard item={item} onDelete={null} onPress={() => null} />
+              <PostCard
+                item={item}
+                onDelete={deletePost}
+                onPress={() => null}
+              />
             )}
             keyExtractor={({ id }) => id}
             showsVerticalScrollIndicator={false}

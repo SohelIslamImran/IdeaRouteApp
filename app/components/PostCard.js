@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 
 import {
   Card,
@@ -18,39 +20,44 @@ import {
   LikeButton,
 } from "../styles/FeedStyles";
 import Spacer from "../styles/Spacer";
+import { AuthContext } from "../auth/AuthContextProvider";
+
+dayjs.extend(relativeTime);
 
 const PostCard = ({ item, onDelete, onPress }) => {
+  const { user, avatar } = useContext(AuthContext);
+  const [liked, setLiked] = useState(false);
+
   return (
     <Spacer p={20} pb={10}>
       <Card key={item.id}>
         <UserInfo>
-          <UserImg source={item.userImg} />
+          <UserImg source={{ uri: item.userImg }} />
           <UserInfoText>
             <TouchableOpacity onPress={onPress}>
               <UserName>{item.userName}</UserName>
             </TouchableOpacity>
-            <PostTime>{item.postTime}</PostTime>
+            <PostTime>{dayjs(item.time.toDate()).fromNow()}</PostTime>
           </UserInfoText>
         </UserInfo>
-        <PostText>{item.post}</PostText>
-        {item.postImg !== "none" ? (
-          <PostImg source={item.postImg} />
-        ) : (
-          <Divider />
-        )}
-
+        <PostText>{item.text}</PostText>
+        {item.image ? <PostImg source={{ uri: item.image }} /> : <Divider />}
         <InteractionWrapper>
-          <Interaction active={item.liked}>
-            <LikeButton active={item.liked} />
-            <InteractionText active={item.liked}>1 like</InteractionText>
+          <Interaction active={liked} onPress={() => setLiked(!liked)}>
+            <LikeButton active={liked} />
+            <InteractionText active={liked}>
+              {item.likes > 0 ? `${item.likes} Like` : "Like"}
+            </InteractionText>
           </Interaction>
           <Interaction>
             <Ionicons name="md-chatbubble-outline" size={25} />
-            <InteractionText>commentText</InteractionText>
+            <InteractionText>Comment</InteractionText>
           </Interaction>
-          <Interaction onPress={() => onDelete(item.id)}>
-            <Ionicons name="md-trash-bin" size={25} />
-          </Interaction>
+          {user.uid === item.userId && (
+            <Interaction onPress={() => onDelete(item.id)}>
+              <Ionicons name="md-trash-bin" size={25} />
+            </Interaction>
+          )}
         </InteractionWrapper>
       </Card>
     </Spacer>

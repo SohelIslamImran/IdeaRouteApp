@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { TouchableOpacity } from "react-native";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { Alert, TouchableOpacity } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import ActionButton from "react-native-action-button";
@@ -17,9 +17,17 @@ import {
 import SafeArea from "../styles/SafeArea";
 import Text from "../styles/Text";
 import { colors } from "../config/theme/colors";
+import { AuthContext } from "../auth/AuthContextProvider";
+import useStore from "../firestore/useStore";
+import { StoreContext } from "../firestore/StoreContextProvider";
+import { Loader } from "../styles/Loader";
 
 const PostScreen = ({ route, navigation }) => {
+  const { avatar } = useContext(AuthContext);
+  const { isLoading } = useContext(StoreContext);
+  const { addPost } = useStore();
   const inputTextRef = useRef(null);
+  const [text, setText] = useState(null);
   const [image, setImage] = useState(null);
   const photoUri = route.params?.image;
 
@@ -42,7 +50,7 @@ const PostScreen = ({ route, navigation }) => {
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
     });
@@ -53,20 +61,39 @@ const PostScreen = ({ route, navigation }) => {
     }
   };
 
+  const handlePost = async () => {
+    if (text || image) {
+      await addPost(text.trim(), image);
+      navigation.goBack();
+      Alert.alert(
+        "Post published!",
+        "Your post has been published Successfully!"
+      );
+      setText(null);
+      setImage(null);
+    }
+  };
+
   return (
     <SafeArea>
+      {isLoading && <Loader />}
       <PostHeader>
         <TouchableOpacity>
           <Ionicons name="md-arrow-back" size={24} color={colors.lightGray} />
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handlePost}>
           <Text w6>Post</Text>
         </TouchableOpacity>
       </PostHeader>
 
       <InputContainer>
-        <Avatar source={require("../assets/users/user-3.jpg")} />
-        <InputText ref={inputTextRef} placeholder="Want to share something?" />
+        <Avatar source={{ uri: avatar }} />
+        <InputText
+          ref={inputTextRef}
+          placeholder="Want to share something?"
+          onChangeText={(txt) => setText(txt)}
+          value={text}
+        />
       </InputContainer>
 
       <PostImgContainer>
