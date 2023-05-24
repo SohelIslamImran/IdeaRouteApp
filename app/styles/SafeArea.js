@@ -3,7 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 const SafeArea = styled(SafeAreaView)`
   flex: 1;
-  background-color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.bg.primary};
 `;
 
 export default SafeArea;
